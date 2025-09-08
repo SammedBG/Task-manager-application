@@ -48,58 +48,58 @@ A full-featured task management application built with the MERN stack (MongoDB, 
 ### Backend Setup
 
 1. **Clone the repository**
-   \`\`\`bash
+   ```bash
    git clone <repository-url>
    cd task-manager-mern
-   \`\`\`
+   ```
 
 2. **Install backend dependencies**
-   \`\`\`bash
+   ```bash
    cd backend
    npm install
-   \`\`\`
+   ```
 
 3. **Environment Configuration**
    Create a `.env` file in the backend directory:
-   \`\`\`env
+   ```env
    MONGODB_URI=mongodb://localhost:27017/taskmanager
    JWT_SECRET=your_super_secret_jwt_key_here
    PORT=5000
-   \`\`\`
+   ```
 
 4. **Start MongoDB**
    - For local MongoDB: `mongod`
    - For MongoDB Atlas: Use your connection string
 
 5. **Run the backend server**
-   \`\`\`bash
+   ```bash
    npm run dev
-   \`\`\`
+   ```
    The server will start on `http://localhost:5000`
 
 ### Frontend Setup
 
 1. **Install frontend dependencies**
-   \`\`\`bash
+   ```bash
    cd frontend
    npm install
-   \`\`\`
+   ```
 
 2. **Install additional dependencies**
-   \`\`\`bash
+   ```bash
    npm install react-beautiful-dnd chart.js react-chartjs-2 date-fns react-datepicker
-   \`\`\`
+   ```
 
 3. **Setup TailwindCSS**
-   \`\`\`bash
+   ```bash
    npm install -D tailwindcss postcss autoprefixer
    npx tailwindcss init -p
-   \`\`\`
+   ```
 
 4. **Start the React development server**
-   \`\`\`bash
+   ```bash
    npm start
-   \`\`\`
+   ```
    The app will open at `http://localhost:3000`
 
 ## 🎯 Usage Guide
@@ -174,7 +174,7 @@ PORT=5000
 
 # Frontend (if needed)
 REACT_APP_API_URL=your_backend_api_url
-\`\`\`
+```
 
 ## 🤝 Contributing
 
