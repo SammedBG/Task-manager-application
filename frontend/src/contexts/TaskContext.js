@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from "react"
-import axios from "axios"
+import api from "../config/axios"
 import { useAuth } from "./AuthContext"
 
 const TaskContext = createContext()
@@ -36,7 +36,7 @@ export const TaskProvider = ({ children }) => {
       if (filter !== "all") params.status = filter
       if (tagFilter) params.tag = tagFilter
 
-      const response = await axios.get("/api/tasks", { params })
+      const response = await api.get("/api/tasks", { params })
       setTasks(response.data)
     } catch (error) {
       console.error("Error fetching tasks:", error)
@@ -47,7 +47,7 @@ export const TaskProvider = ({ children }) => {
 
   const fetchAnalytics = async () => {
     try {
-      const response = await axios.get("/api/tasks/analytics")
+      const response = await api.get("/api/tasks/analytics")
       setAnalytics(response.data)
     } catch (error) {
       console.error("Error fetching analytics:", error)
@@ -56,7 +56,7 @@ export const TaskProvider = ({ children }) => {
 
   const createTask = async (taskData) => {
     try {
-      const response = await axios.post("/api/tasks", taskData)
+      const response = await api.post("/api/tasks", taskData)
       setTasks((prev) => [...prev, response.data])
       fetchAnalytics() // Refresh analytics
       return { success: true, task: response.data }
@@ -70,7 +70,7 @@ export const TaskProvider = ({ children }) => {
 
   const updateTask = async (taskId, updates) => {
     try {
-      const response = await axios.patch(`/api/tasks/${taskId}`, updates)
+      const response = await api.patch(`/api/tasks/${taskId}`, updates)
       setTasks((prev) => prev.map((task) => (task._id === taskId ? response.data : task)))
       fetchAnalytics() // Refresh analytics
       return { success: true, task: response.data }
@@ -84,7 +84,7 @@ export const TaskProvider = ({ children }) => {
 
   const deleteTask = async (taskId) => {
     try {
-      await axios.delete(`/api/tasks/${taskId}`)
+      await api.delete(`/api/tasks/${taskId}`)
       setTasks((prev) => prev.filter((task) => task._id !== taskId))
       fetchAnalytics() // Refresh analytics
       return { success: true }
@@ -106,7 +106,7 @@ export const TaskProvider = ({ children }) => {
         order: index,
       }))
 
-      await axios.patch("/api/tasks/reorder", { taskOrders })
+      await api.patch("/api/tasks/reorder", { taskOrders })
       return { success: true }
     } catch (error) {
       // Revert on error

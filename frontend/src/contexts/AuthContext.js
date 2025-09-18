@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, useState, useEffect } from "react"
-import axios from "axios"
+import api from "../config/axios"
 
 const AuthContext = createContext()
 
@@ -20,7 +20,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) {
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
       fetchUser()
     } else {
       setLoading(false)
@@ -29,11 +28,10 @@ export const AuthProvider = ({ children }) => {
 
   const fetchUser = async () => {
     try {
-      const response = await axios.get("/api/auth/me")
+      const response = await api.get("/api/auth/me")
       setUser(response.data.user)
     } catch (error) {
       localStorage.removeItem("token")
-      delete axios.defaults.headers.common["Authorization"]
     } finally {
       setLoading(false)
     }
@@ -41,11 +39,10 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post("/api/auth/login", { email, password })
+      const response = await api.post("/api/auth/login", { email, password })
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
       setUser(user)
 
       return { success: true }
@@ -59,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const register = async (username, email, password) => {
     try {
-      const response = await axios.post("/api/auth/register", {
+      const response = await api.post("/api/auth/register", {
         username,
         email,
         password,
@@ -67,7 +64,6 @@ export const AuthProvider = ({ children }) => {
       const { token, user } = response.data
 
       localStorage.setItem("token", token)
-      axios.defaults.headers.common["Authorization"] = `Bearer ${token}`
       setUser(user)
 
       return { success: true }
@@ -81,13 +77,12 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem("token")
-    delete axios.defaults.headers.common["Authorization"]
     setUser(null)
   }
 
   const updatePreferences = async (preferences) => {
     try {
-      const response = await axios.patch("/api/auth/preferences", preferences)
+      const response = await api.patch("/api/auth/preferences", preferences)
       setUser(response.data.user)
       return { success: true }
     } catch (error) {
